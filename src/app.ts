@@ -1,5 +1,6 @@
-import './app.scss';
+import "wired-elements";
+import "./app.scss";
 
-function hello( test: string ) { }
+function hello(test: string) {}
 
-hello( 'grss' )
+hello("grss");

@@ -4,12 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Side Project Picker</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="container">
       <div class="section projects">
         <div id="projects">
           <h3>Projects</h3>
+        </div>
+
+        <div id="new-project">
+          <h2>New Project</h2>
+          <form id="new-project-form">
+            <wired-input
+              name="projectName"
+              placeholder="Project name..."
+              type="text"
+              id="project-name"
+            ></wired-input>
+            <wired-textarea
+              name="projectDescription"
+              id="project-description"
+              placeholder="Project Description..."
+            ></wired-textarea>
+            <wired-button type="submit" id="add-project-button"
+              >Add Project</wired-button
+            >
+          </form>
         </div>
       </div>
       <div class="section picker">

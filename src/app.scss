@@ -1,9 +1,8 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
 body {
+  margin: 0;
+  padding: 16px 8px;
+  box-sizing: border-box;
+  font-family: "Gloria Hallelujah", cursive;
 }
 
 #container {
@@ -16,8 +15,17 @@ body {
     padding: 1rem;
 
     &.projects {
-      background-color: pink;
+      //background-color: pink;
       width: 30%;
+
+      #new-project {
+        margin-top: 3rem;
+
+        #new-project-form {
+          display: flex;
+          flex-direction: column;
+        }
+      }
     }
 
     &.picker {
