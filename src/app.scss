@@ -1,8 +1,16 @@
+html,
+body,
+pre,
+code,
+kbd,
+samp {
+  font-family: 'Press Start 2P';
+}
+
 body {
   margin: 0;
-  padding: 16px 8px;
+  padding: 0;
   box-sizing: border-box;
-  font-family: "Gloria Hallelujah", cursive;
 }
 
 #container {
@@ -16,21 +24,31 @@ body {
 
     &.projects {
       //background-color: pink;
-      width: 30%;
+      width: 40%;
 
-      #new-project {
+      #add-project {
         margin-top: 3rem;
 
-        #new-project-form {
+        #add-project-form {
           display: flex;
           flex-direction: column;
+          padding: 1rem 0;
+
+          .nes-field {
+            margin: 1rem 0;
+          }
+
+          #add-project-button {
+            margin-top: 2rem;
+            width: 50%;
+          }
         }
       }
     }
 
     &.picker {
       background-color: lightgrey;
-      width: 70%;
+      width: 60%;
     }
   }
 }

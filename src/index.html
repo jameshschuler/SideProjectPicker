@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Side Project Picker</title>
     <link
-      href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap"
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/nes.css@latest/css/nes.min.css"
       rel="stylesheet"
     />
   </head>
@@ -14,25 +18,41 @@
       <div class="section projects">
         <div id="projects">
           <h3>Projects</h3>
+          <div class="lists">
+            <ul id="projects-list" class="nes-list is-circle"></ul>
+          </div>
         </div>
 
-        <div id="new-project">
+        <div id="add-project">
           <h2>New Project</h2>
-          <form id="new-project-form">
-            <wired-input
-              name="projectName"
-              placeholder="Project name..."
-              type="text"
-              id="project-name"
-            ></wired-input>
-            <wired-textarea
-              name="projectDescription"
+          <div id="form-error-container" class="nes-container">
+            <p id="form-error" class="nes-text is-error"></p>
+          </div>
+          <form id="add-project-form" autocomplete="off">
+            <div class="nes-field">
+              <label for="project-name">Name</label>
+              <input
+                type="text"
+                id="project-name"
+                name="projectName"
+                placeholder="Project Name..."
+                class="nes-input"
+              />
+            </div>
+            <label for="project-description">Textarea</label>
+            <textarea
               id="project-description"
+              name="projectDescription"
               placeholder="Project Description..."
-            ></wired-textarea>
-            <wired-button type="submit" id="add-project-button"
-              >Add Project</wired-button
+              class="nes-textarea"
+            ></textarea>
+            <button
+              type="submit"
+              id="add-project-button"
+              class="nes-btn is-primary"
             >
+              Add Project
+            </button>
           </form>
         </div>
       </div>
