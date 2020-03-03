@@ -47,8 +47,14 @@ body {
     }
 
     &.picker {
-      background-color: lightgrey;
+      //background-color: lightgrey;
       width: 60%;
+
+      #projects-list {
+        .nes-container {
+          margin-top: 2rem;
+        }
+      }
     }
   }
 }

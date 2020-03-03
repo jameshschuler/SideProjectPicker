@@ -11,9 +11,7 @@ const formErrorContainer = document.getElementById(
 ) as HTMLDivElement;
 formErrorContainer.hidden = true;
 
-const projectsList = document.getElementById(
-  'projects-list'
-) as HTMLUListElement;
+const projectsList = document.getElementById('projects-list') as HTMLDivElement;
 
 addProjectForm.addEventListener('submit', event => {
   event.preventDefault();
@@ -34,6 +32,7 @@ addProjectForm.addEventListener('submit', event => {
     formErrorContainer.hidden = true;
     addProject(projectName.value, projectDescription.value);
     updateProjectsList();
+    addProjectForm.reset();
   }
 });
 
@@ -42,9 +41,23 @@ const updateProjectsList = () => {
   projectsList.innerHTML = '';
   projects.map((project: Project) => {
     {
-      const listItem = document.createElement('li');
-      listItem.innerText = project.name;
-      projectsList.appendChild(listItem);
+      const title = document.createElement('p');
+      title.classList.add('title');
+      title.innerText = project.name;
+
+      const content = document.createElement('p');
+      content.innerText = project.description;
+
+      const projectContainer = document.createElement('div');
+      projectContainer.classList.add(
+        'nes-container',
+        'is-rounded',
+        'with-title',
+        'nes-pointer'
+      );
+      projectContainer.appendChild(title);
+      projectContainer.appendChild(content);
+      projectsList.appendChild(projectContainer);
     }
   });
 };
