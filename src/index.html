@@ -15,6 +15,7 @@
   </head>
   <body>
     <div id="container">
+      <!-- add project section -->
       <div class="section projects">
         <div id="add-project">
           <h2>New Project</h2>
@@ -49,11 +50,31 @@
           </form>
         </div>
       </div>
+
+      <!-- projects list -->
       <div class="section picker">
         <h1>Choose Project</h1>
         <div id="projects-list"></div>
       </div>
     </div>
+
+    <!-- dialog -->
+    <dialog class="nes-dialog is-rounded" id="delete-project-dialog">
+      <form method="dialog">
+        <p class="title">Delete Project</p>
+        <p>Delete project '<span id="project-name-display"></span>'?</p>
+        <menu class="dialog-menu">
+          <button class="nes-btn">Cancel</button>
+          <button
+            data-project-name=""
+            class="nes-btn is-error"
+            id="delete-project-button"
+          >
+            Delete
+          </button>
+        </menu>
+      </form>
+    </dialog>
     <script src="./app.js" type="text/javascript"></script>
   </body>
 </html>

@@ -13,6 +13,10 @@ body {
   box-sizing: border-box;
 }
 
+#project-name-display {
+  font-weight: bold;
+}
+
 #container {
   display: flex;
   flex-direction: row;

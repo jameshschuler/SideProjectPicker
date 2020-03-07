@@ -1,5 +1,10 @@
 import { Project } from './Project';
-import { addProject, getProjects, validateProjectData } from './projects';
+import {
+  addProject,
+  deleteProject,
+  getProjects,
+  validateProjectData
+} from './projects';
 
 const addProjectForm = document.getElementById(
   'add-project-form'
@@ -55,6 +60,22 @@ const updateProjectsList = () => {
         'with-title',
         'nes-pointer'
       );
+
+      projectContainer.addEventListener('click', function() {
+        const dialog: any = document.getElementById('delete-project-dialog');
+        document.getElementById('project-name-display').innerText =
+          project.name;
+        const deleteButton = document.getElementById('delete-project-button');
+        deleteButton.dataset.projectName = project.name;
+
+        deleteButton.addEventListener('click', function() {
+          deleteProject(project.name);
+          updateProjectsList();
+        });
+
+        dialog.showModal();
+      });
+
       projectContainer.appendChild(title);
       projectContainer.appendChild(content);
       projectsList.appendChild(projectContainer);

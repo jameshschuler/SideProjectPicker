@@ -11,6 +11,13 @@ export const addProject = (name: string, description: string): void => {
   console.log(localStorage.getItem('projects'));
 };
 
+export const deleteProject = (name: string) => {
+  const projects = getProjects();
+  const updatedProjectsList = projects.filter(project => project.name !== name);
+
+  localStorage.setItem('projects', JSON.stringify(updatedProjectsList));
+};
+
 export const getProjects = (): Project[] => {
   return JSON.parse(localStorage.getItem('projects')) as Project[];
 };
