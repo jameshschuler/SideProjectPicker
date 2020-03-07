@@ -27,7 +27,6 @@ body {
     padding: 1rem;
 
     &.projects {
-      //background-color: pink;
       width: 40%;
 
       #add-project {
@@ -51,14 +50,23 @@ body {
     }
 
     &.picker {
-      //background-color: lightgrey;
       width: 60%;
 
       #projects-list {
         .nes-container {
           margin-top: 2rem;
         }
+
+        .selected {
+          background-color: lightgreen;
+        }
       }
     }
   }
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

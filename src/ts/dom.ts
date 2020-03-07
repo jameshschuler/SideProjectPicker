@@ -9,6 +9,9 @@ import {
 const addProjectForm = document.getElementById(
   'add-project-form'
 ) as HTMLFormElement;
+const chooseRandomProject = document.getElementById(
+  'choose-random-project-button'
+);
 
 const formError = document.getElementById('form-error') as HTMLSpanElement;
 const formErrorContainer = document.getElementById(
@@ -41,6 +44,23 @@ addProjectForm.addEventListener('submit', event => {
   }
 });
 
+chooseRandomProject.addEventListener('click', () => {
+  document
+    .querySelectorAll('.selected')
+    .forEach(item => item.classList.remove('selected'));
+
+  const projects = getProjects();
+
+  const randomElement: Project =
+    projects[Math.floor(Math.random() * projects.length)];
+
+  const projectElement = projectsList.querySelector(
+    `.project-container[data-project-name="${randomElement.name}"]`
+  );
+
+  projectElement.classList.add('selected');
+});
+
 const updateProjectsList = () => {
   const projects = getProjects();
   projectsList.innerHTML = '';
@@ -54,11 +74,13 @@ const updateProjectsList = () => {
       content.innerText = project.description;
 
       const projectContainer = document.createElement('div');
+      projectContainer.dataset.projectName = project.name;
       projectContainer.classList.add(
         'nes-container',
         'is-rounded',
         'with-title',
-        'nes-pointer'
+        'nes-pointer',
+        'project-container'
       );
 
       projectContainer.addEventListener('click', function() {
