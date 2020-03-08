@@ -51,14 +51,32 @@ chooseRandomProject.addEventListener('click', () => {
 
   const projects = getProjects();
 
-  const randomElement: Project =
-    projects[Math.floor(Math.random() * projects.length)];
+  let iterations = Math.floor(Math.random() * 20);
+  let counter = 0;
+  let currentIndex = 0;
 
-  const projectElement = projectsList.querySelector(
-    `.project-container[data-project-name="${randomElement.name}"]`
-  );
+  const loop = setInterval(() => {
+    document
+      .querySelectorAll('.selected')
+      .forEach(item => item.classList.remove('selected'));
 
-  projectElement.classList.add('selected');
+    const { name } = projects[currentIndex];
+    const projectElement = projectsList.querySelector(
+      `.project-container[data-project-name="${name}"]`
+    );
+    projectElement.classList.add('selected');
+
+    counter++;
+    currentIndex++;
+
+    if (currentIndex >= projects.length) {
+      currentIndex = 0;
+    }
+
+    if (counter === iterations) {
+      clearInterval(loop);
+    }
+  }, 250);
 });
 
 const updateProjectsList = () => {
