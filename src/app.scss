@@ -53,8 +53,33 @@ body {
       width: 60%;
 
       #projects-list {
-        .nes-container {
+        .project-container {
           margin-top: 2rem;
+
+          &:hover {
+            background-color: #eee;
+          }
+
+          .content-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .icons {
+              display: flex;
+              flex-direction: row;
+
+              svg {
+                color: #006bb3;
+                font-size: 1.25rem;
+              }
+
+              svg.fa-trash {
+                color: #8c2022;
+                margin-left: 0.5rem;
+              }
+            }
+          }
         }
 
         .selected {

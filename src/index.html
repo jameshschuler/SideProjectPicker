@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <!-- dialog -->
+    <!-- delete dialog -->
     <dialog class="nes-dialog is-rounded" id="delete-project-dialog">
       <form method="dialog">
         <p class="title">Delete Project</p>
@@ -85,6 +85,27 @@
         </menu>
       </form>
     </dialog>
+
+    <!-- edit project dialog -->
+    <dialog class="nes-dialog is-rounded" id="edit-project-dialog">
+      <form method="dialog">
+        <p class="title">Edit Project</p>
+        <menu class="dialog-menu">
+          <button class="nes-btn">Cancel</button>
+          <button
+            data-project-name=""
+            class="nes-btn is-error"
+            id="delete-project-button"
+          >
+            Save
+          </button>
+        </menu>
+      </form>
+    </dialog>
+    <script
+      src="https://kit.fontawesome.com/e568baa144.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="./app.js" type="text/javascript"></script>
   </body>
 </html>

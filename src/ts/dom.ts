@@ -91,17 +91,27 @@ const updateProjectsList = () => {
       const content = document.createElement('p');
       content.innerText = project.description;
 
-      const projectContainer = document.createElement('div');
-      projectContainer.dataset.projectName = project.name;
-      projectContainer.classList.add(
-        'nes-container',
-        'is-rounded',
-        'with-title',
-        'nes-pointer',
-        'project-container'
-      );
+      const editIcon = document.createElement('i');
+      editIcon.classList.add('fas', 'fa-pencil-alt');
+      editIcon.addEventListener('click', () => {
+        const dialog: any = document.getElementById('edit-project-dialog');
+        // document.getElementById('project-name-display').innerText =
+        //   project.name;
+        // const deleteButton = document.getElementById('delete-project-button');
+        // deleteButton.dataset.projectName = project.name;
 
-      projectContainer.addEventListener('click', function() {
+        // deleteButton.addEventListener('click', function() {
+        //   deleteProject(project.name);
+        //   updateProjectsList();
+        // });
+
+        dialog.showModal();
+      });
+
+      const deleteIcon = document.createElement('i');
+      deleteIcon.classList.add('fas', 'fa-trash');
+      deleteIcon.addEventListener('click', () => {
+        console.log('deletr');
         const dialog: any = document.getElementById('delete-project-dialog');
         document.getElementById('project-name-display').innerText =
           project.name;
@@ -116,8 +126,28 @@ const updateProjectsList = () => {
         dialog.showModal();
       });
 
+      const icons = document.createElement('div');
+      icons.classList.add('icons');
+      icons.appendChild(editIcon);
+      icons.appendChild(deleteIcon);
+
+      const contentContainer = document.createElement('div');
+      contentContainer.classList.add('content-container');
+      contentContainer.appendChild(content);
+      contentContainer.appendChild(icons);
+
+      const projectContainer = document.createElement('div');
+      projectContainer.dataset.projectName = project.name;
+      projectContainer.classList.add(
+        'nes-container',
+        'is-rounded',
+        'with-title',
+        'nes-pointer',
+        'project-container'
+      );
       projectContainer.appendChild(title);
-      projectContainer.appendChild(content);
+      projectContainer.appendChild(contentContainer);
+
       projectsList.appendChild(projectContainer);
     }
   });
