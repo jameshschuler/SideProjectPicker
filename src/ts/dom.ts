@@ -3,6 +3,7 @@ import {
   addProject,
   deleteProject,
   getProjects,
+  updateProject,
   validateProjectData
 } from './projects';
 
@@ -91,27 +92,41 @@ const updateProjectsList = () => {
       const content = document.createElement('p');
       content.innerText = project.description;
 
-      const editIcon = document.createElement('i');
-      editIcon.classList.add('fas', 'fa-pencil-alt');
+      const editIcon = document.createElement('span');
+      editIcon.appendChild(createElement('i', ['fas', 'fa-pencil-alt']));
       editIcon.addEventListener('click', () => {
         const dialog: any = document.getElementById('edit-project-dialog');
-        // document.getElementById('project-name-display').innerText =
-        //   project.name;
-        // const deleteButton = document.getElementById('delete-project-button');
-        // deleteButton.dataset.projectName = project.name;
+        const title = document.querySelector('#edit-project-dialog .title');
+        title.innerHTML = `Edit '${project.name}'`;
 
-        // deleteButton.addEventListener('click', function() {
-        //   deleteProject(project.name);
-        //   updateProjectsList();
-        // });
+        const projectNameInput = document.getElementById(
+          'edit-project-name'
+        ) as HTMLInputElement;
+        projectNameInput.value = project.name;
+
+        const projectDescriptionInput = document.getElementById(
+          'edit-project-description'
+        ) as HTMLInputElement;
+        projectDescriptionInput.value = project.description;
+
+        document
+          .getElementById('edit-project-button')
+          .addEventListener('click', () => {
+            const result = updateProject(project.name, {
+              name: projectNameInput.value,
+              description: projectDescriptionInput.value
+            } as Project);
+
+            setErrorMessage(result);
+            updateProjectsList();
+          });
 
         dialog.showModal();
       });
 
-      const deleteIcon = document.createElement('i');
-      deleteIcon.classList.add('fas', 'fa-trash');
+      const deleteIcon = document.createElement('span');
+      deleteIcon.appendChild(createElement('i', ['fas', 'fa-trash']));
       deleteIcon.addEventListener('click', () => {
-        console.log('deletr');
         const dialog: any = document.getElementById('delete-project-dialog');
         document.getElementById('project-name-display').innerText =
           project.name;
@@ -126,8 +141,7 @@ const updateProjectsList = () => {
         dialog.showModal();
       });
 
-      const icons = document.createElement('div');
-      icons.classList.add('icons');
+      const icons = createElement('div', ['icons']);
       icons.appendChild(editIcon);
       icons.appendChild(deleteIcon);
 
@@ -152,6 +166,24 @@ const updateProjectsList = () => {
     }
   });
 };
+
+function createElement(type: string, classes: string[]) {
+  const element = document.createElement(type);
+  element.classList.add(...classes);
+  return element;
+}
+
+// TODO: hide error message after 3000
+function setErrorMessage(message?: string) {
+  if (message || message === '') {
+    document.getElementById('general-error').innerText = message;
+    document
+      .getElementById('general-error-container')
+      .classList.remove('hidden');
+  } else {
+    document.getElementById('general-error-container').classList.add('hidden');
+  }
+}
 
 window.onload = () => {
   updateProjectsList();

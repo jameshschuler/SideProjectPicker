@@ -13,6 +13,17 @@ body {
   box-sizing: border-box;
 }
 
+menu {
+  padding-left: 0;
+}
+
+/*
+*
+*/
+.hidden {
+  display: none;
+}
+
 #project-name-display {
   font-weight: bold;
 }
@@ -51,6 +62,10 @@ body {
 
     &.picker {
       width: 60%;
+
+      #general-error-container {
+        margin: 0.5rem 0;
+      }
 
       #projects-list {
         .project-container {

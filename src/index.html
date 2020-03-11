@@ -64,6 +64,9 @@
           </button>
         </div>
 
+        <div id="general-error-container" class="hidden nes-container">
+          <p id="general-error" class="nes-text is-error"></p>
+        </div>
         <div id="projects-list"></div>
       </div>
     </div>
@@ -88,15 +91,29 @@
 
     <!-- edit project dialog -->
     <dialog class="nes-dialog is-rounded" id="edit-project-dialog">
-      <form method="dialog">
-        <p class="title">Edit Project</p>
+      <form method="dialog" autocomplete="off">
+        <p class="title"></p>
+        <div class="nes-field">
+          <label for="project-name">Name</label>
+          <input
+            type="text"
+            id="edit-project-name"
+            name="projectName"
+            placeholder="Project Name..."
+            class="nes-input"
+          />
+        </div>
+        <label for="project-description">Textarea</label>
+        <textarea
+          id="edit-project-description"
+          name="projectDescription"
+          placeholder="Project Description..."
+          class="nes-textarea"
+        ></textarea>
+
         <menu class="dialog-menu">
           <button class="nes-btn">Cancel</button>
-          <button
-            data-project-name=""
-            class="nes-btn is-error"
-            id="delete-project-button"
-          >
+          <button class="nes-btn is-success" id="edit-project-button">
             Save
           </button>
         </menu>
