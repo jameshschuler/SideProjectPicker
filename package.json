@@ -35,5 +35,7 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "uuid": "^7.0.2"
+  }
 }

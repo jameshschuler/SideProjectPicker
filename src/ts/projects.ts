@@ -1,12 +1,9 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Project } from './Project';
 
 export const addProject = (name: string, description: string): void => {
-  const project: Project = { name, description };
-
-  let projects: Project[] = JSON.parse(localStorage.getItem('projects')) || [];
-  projects.push(project);
-
-  localStorage.setItem('projects', JSON.stringify(projects));
+  const project: Project = { id: '', name, description };
+  saveChanges(project);
 };
 
 export const deleteProject = (name: string) => {
@@ -26,31 +23,26 @@ export const getProject = (name: string): Project | null => {
   );
 };
 
-export const updateProject = (
-  existingName: string,
-  modifiedProject: Project
-) => {
+export const updateProject = (project: Project) => {
+  // TODO: validation
+
+  saveChanges(project);
+};
+
+const saveChanges = (project: Project) => {
   const projects = getProjects();
-  const project =
-    projects.filter((project: Project) => project.name === existingName)[0] ||
-    null;
 
-  if (project) {
-    // TODO: need to ignore self
-    const result = validateProjectData(
-      modifiedProject.name,
-      modifiedProject.description
-    );
+  const existingProject = projects.filter(p => p.id === project.id)[0];
 
-    if (result) {
-      return result;
-    }
-
-    project.name = modifiedProject.name;
-    project.description = modifiedProject.description;
-
-    localStorage.setItem('projects', JSON.stringify(projects));
+  if (existingProject) {
+    existingProject.name = project.name;
+    existingProject.description = project.description;
+  } else {
+    project.id = uuidv4();
+    projects.push(project);
   }
+
+  localStorage.setItem('projects', JSON.stringify(projects));
 };
 
 export const validateProjectData = (

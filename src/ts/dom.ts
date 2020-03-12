@@ -3,7 +3,6 @@ import {
   addProject,
   deleteProject,
   getProjects,
-  updateProject,
   validateProjectData
 } from './projects';
 
@@ -28,13 +27,13 @@ addProjectForm.addEventListener('submit', event => {
   const projectName = addProjectForm.elements[0] as HTMLInputElement;
   const projectDescription = addProjectForm.elements[1] as HTMLTextAreaElement;
 
-  const response = validateProjectData(
+  const validationResult = validateProjectData(
     projectName.value,
     projectDescription.value
   );
 
-  if (response) {
-    formError.innerHTML = response;
+  if (validationResult) {
+    formError.innerHTML = validationResult;
     formErrorContainer.hidden = false;
   } else {
     formError.innerHTML = '';
@@ -95,30 +94,15 @@ const updateProjectsList = () => {
       const editIcon = document.createElement('span');
       editIcon.appendChild(createElement('i', ['fas', 'fa-pencil-alt']));
       editIcon.addEventListener('click', () => {
+        buildEditDialog(project);
+
         const dialog: any = document.getElementById('edit-project-dialog');
-        const title = document.querySelector('#edit-project-dialog .title');
-        title.innerHTML = `Edit '${project.name}'`;
-
-        const projectNameInput = document.getElementById(
-          'edit-project-name'
-        ) as HTMLInputElement;
-        projectNameInput.value = project.name;
-
-        const projectDescriptionInput = document.getElementById(
-          'edit-project-description'
-        ) as HTMLInputElement;
-        projectDescriptionInput.value = project.description;
 
         document
-          .getElementById('edit-project-button')
-          .addEventListener('click', () => {
-            const result = updateProject(project.name, {
-              name: projectNameInput.value,
-              description: projectDescriptionInput.value
-            } as Project);
-
-            setErrorMessage(result);
-            updateProjectsList();
+          .getElementById('cancel-edit-button')
+          .addEventListener('click', event => {
+            event.stopPropagation();
+            dialog.close();
           });
 
         dialog.showModal();
@@ -166,6 +150,32 @@ const updateProjectsList = () => {
     }
   });
 };
+
+const buildEditDialog = (project: Project) => {
+  const title = document.getElementById('edit-dialog-title');
+  title.innerText = `Edit '${project.name}'`;
+
+  const projectId = document.getElementById('project-id') as HTMLInputElement;
+  projectId.value = project.id;
+
+  const projectNameInput = document.getElementById(
+    'edit-project-name'
+  ) as HTMLInputElement;
+  projectNameInput.value = project.name;
+
+  const projectDescriptionInput = document.getElementById(
+    'edit-project-description'
+  ) as HTMLInputElement;
+  projectDescriptionInput.value = project.description;
+
+  const editForm = document.getElementById('edit-project-form');
+  editForm.addEventListener('submit', event => {
+    event.preventDefault();
+    console.log('submit');
+  });
+};
+
+const buildDeleteDialog = () => {};
 
 function createElement(type: string, classes: string[]) {
   const element = document.createElement(type);
