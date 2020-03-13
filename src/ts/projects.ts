@@ -19,12 +19,6 @@ export const getProjects = (): Project[] => {
   return JSON.parse(localStorage.getItem('projects')) as Project[];
 };
 
-export const getProject = (name: string): Project | null => {
-  return (
-    getProjects().filter((project: Project) => project.name === name)[0] || null
-  );
-};
-
 export const updateProject = (project: Project) => {
   saveChanges(project);
 };
