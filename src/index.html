@@ -63,9 +63,8 @@
             Random
           </button>
         </div>
-
-        <div id="general-error-container" class="hidden nes-container">
-          <p id="general-error" class="nes-text is-error"></p>
+        <div id="no-projects-alert" class="nes-container hidden">
+          <p class="nes-text">No projects added yet!</p>
         </div>
         <div id="projects-list"></div>
       </div>
@@ -75,11 +74,11 @@
     <dialog class="nes-dialog is-rounded" id="delete-project-dialog">
       <form method="dialog">
         <p class="title">Delete Project</p>
-        <p>Delete '<span id="project-name-display"></span>'?</p>
+        <p id="delete-dialog-title"></p>
         <menu class="dialog-menu">
           <button class="nes-btn">Cancel</button>
           <button
-            data-project-name=""
+            data-project-id=""
             class="nes-btn is-error"
             id="delete-project-button"
           >
@@ -91,6 +90,9 @@
 
     <!-- edit project dialog -->
     <dialog class="nes-dialog is-rounded" id="edit-project-dialog">
+      <div id="edit-error-container" class="nes-container hidden">
+        <p id="edit-form-error" class="nes-text is-error"></p>
+      </div>
       <form id="edit-project-form" method="dialog" autocomplete="off">
         <p id="edit-dialog-title"></p>
         <input class="hidden" id="project-id" />

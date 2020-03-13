@@ -6,9 +6,11 @@ export const addProject = (name: string, description: string): void => {
   saveChanges(project);
 };
 
-export const deleteProject = (name: string) => {
+export const deleteProject = (projectId: string) => {
   const projects = getProjects();
-  const updatedProjectsList = projects.filter(project => project.name !== name);
+  const updatedProjectsList = projects.filter(
+    project => project.id !== projectId
+  );
 
   localStorage.setItem('projects', JSON.stringify(updatedProjectsList));
 };
@@ -24,8 +26,6 @@ export const getProject = (name: string): Project | null => {
 };
 
 export const updateProject = (project: Project) => {
-  // TODO: validation
-
   saveChanges(project);
 };
 
@@ -55,11 +55,6 @@ export const validateProjectData = (
 
   if (name.length < 0 || name.length > 255) {
     return 'Project name must be between 1 and 255 characters';
-  }
-
-  const projects = getProjects();
-  if (projects.filter(project => project.name === name).length > 0) {
-    return `A project already exists with name: ${name}`;
   }
 
   if (description.length > 1000) {

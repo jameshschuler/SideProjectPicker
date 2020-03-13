@@ -63,8 +63,8 @@ menu {
     &.picker {
       width: 60%;
 
-      #general-error-container {
-        margin: 0.5rem 0;
+      #no-projects-alert {
+        margin-top: 1rem;
       }
 
       #projects-list {
@@ -102,6 +102,16 @@ menu {
         }
       }
     }
+  }
+}
+
+#edit-project-dialog {
+  #edit-dialog-title {
+    font-size: 1.25rem;
+  }
+
+  #edit-error-container {
+    margin-bottom: 1rem;
   }
 }
 

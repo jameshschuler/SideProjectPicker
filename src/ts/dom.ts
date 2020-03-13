@@ -3,6 +3,7 @@ import {
   addProject,
   deleteProject,
   getProjects,
+  updateProject,
   validateProjectData
 } from './projects';
 
@@ -13,15 +14,62 @@ const chooseRandomProject = document.getElementById(
   'choose-random-project-button'
 );
 
+// Delete Dialog
+const deleteDialog = document.getElementById(
+  'delete-project-dialog'
+) as HTMLDialogElement;
+const deleteDialogTitle = document.getElementById('delete-dialog-title');
+const deleteButton = document.getElementById('delete-project-button');
+
+// Edit Dialog
+const editDialog = document.getElementById(
+  'edit-project-dialog'
+) as HTMLDialogElement;
+const editDialogTitle = document.getElementById('edit-dialog-title');
+const editFormErrorContainer = document.getElementById(
+  'edit-error-container'
+) as HTMLDivElement;
+
+// Edit Form
+const editForm = document.getElementById('edit-project-form');
+const editFormError = document.getElementById(
+  'edit-form-error'
+) as HTMLParagraphElement;
+const projectId = document.getElementById('project-id') as HTMLInputElement;
+const nameInput = document.getElementById(
+  'edit-project-name'
+) as HTMLInputElement;
+const descriptionInput = document.getElementById(
+  'edit-project-description'
+) as HTMLInputElement;
+const cancelEditButton = document.getElementById(
+  'cancel-edit-button'
+) as HTMLButtonElement;
+
+// Add Project Form
 const formError = document.getElementById('form-error') as HTMLSpanElement;
 const formErrorContainer = document.getElementById(
   'form-error-container'
 ) as HTMLDivElement;
 formErrorContainer.hidden = true;
 
+// Projects List
 const projectsList = document.getElementById('projects-list') as HTMLDivElement;
+const noProjectsAlert = document.getElementById(
+  'no-projects-alert'
+) as HTMLDivElement;
 
-addProjectForm.addEventListener('submit', event => {
+/**
+ * Register Events
+ */
+addProjectForm.addEventListener('submit', () => submitProject(event));
+chooseRandomProject.addEventListener('click', () => selectRandomProject());
+
+/**
+ *
+ * @param event
+ */
+const submitProject = (event: any) => {
   event.preventDefault();
 
   const projectName = addProjectForm.elements[0] as HTMLInputElement;
@@ -42,16 +90,20 @@ addProjectForm.addEventListener('submit', event => {
     updateProjectsList();
     addProjectForm.reset();
   }
-});
+};
 
-chooseRandomProject.addEventListener('click', () => {
+const selectRandomProject = () => {
   document
     .querySelectorAll('.selected')
     .forEach(item => item.classList.remove('selected'));
 
   const projects = getProjects();
 
+  if (projects.length === 0) return;
+
   let iterations = Math.floor(Math.random() * 20);
+  if (iterations === 0) iterations = 1;
+
   let counter = 0;
   let currentIndex = 0;
 
@@ -60,9 +112,9 @@ chooseRandomProject.addEventListener('click', () => {
       .querySelectorAll('.selected')
       .forEach(item => item.classList.remove('selected'));
 
-    const { name } = projects[currentIndex];
+    const { id } = projects[currentIndex];
     const projectElement = projectsList.querySelector(
-      `.project-container[data-project-name="${name}"]`
+      `.project-container[data-project-id="${id}"]`
     );
     projectElement.classList.add('selected');
 
@@ -77,123 +129,136 @@ chooseRandomProject.addEventListener('click', () => {
       clearInterval(loop);
     }
   }, 250);
-});
+};
 
+/**
+ *
+ */
 const updateProjectsList = () => {
   const projects = getProjects();
+  projects.length === 0
+    ? noProjectsAlert.classList.remove('hidden')
+    : noProjectsAlert.classList.add('hidden');
+
   projectsList.innerHTML = '';
   projects.map((project: Project) => {
     {
-      const title = document.createElement('p');
-      title.classList.add('title');
+      const title = createElement('p', ['title']);
       title.innerText = project.name;
 
       const content = document.createElement('p');
       content.innerText = project.description;
 
-      const editIcon = document.createElement('span');
-      editIcon.appendChild(createElement('i', ['fas', 'fa-pencil-alt']));
-      editIcon.addEventListener('click', () => {
-        buildEditDialog(project);
+      const showEditDialogButton = document.createElement('span');
+      showEditDialogButton.appendChild(
+        createElement('i', ['fas', 'fa-pencil-alt'])
+      );
 
-        const dialog: any = document.getElementById('edit-project-dialog');
-
-        document
-          .getElementById('cancel-edit-button')
-          .addEventListener('click', event => {
-            event.stopPropagation();
-            dialog.close();
-          });
-
-        dialog.showModal();
+      showEditDialogButton.addEventListener('click', () => {
+        buildEditDialog(editDialog, project);
+        editDialog.showModal();
       });
 
-      const deleteIcon = document.createElement('span');
-      deleteIcon.appendChild(createElement('i', ['fas', 'fa-trash']));
-      deleteIcon.addEventListener('click', () => {
-        const dialog: any = document.getElementById('delete-project-dialog');
-        document.getElementById('project-name-display').innerText =
-          project.name;
-        const deleteButton = document.getElementById('delete-project-button');
-        deleteButton.dataset.projectName = project.name;
+      const showDeleteDialogButton = document.createElement('span');
+      showDeleteDialogButton.appendChild(
+        createElement('i', ['fas', 'fa-trash'])
+      );
+      showDeleteDialogButton.addEventListener('click', () => {
+        buildDeleteDialog(project.name, project.id);
 
-        deleteButton.addEventListener('click', function() {
-          deleteProject(project.name);
-          updateProjectsList();
-        });
-
-        dialog.showModal();
+        deleteDialog.showModal();
       });
 
-      const icons = createElement('div', ['icons']);
-      icons.appendChild(editIcon);
-      icons.appendChild(deleteIcon);
+      const actions = createElement('div', ['icons']);
+      actions.appendChild(showEditDialogButton);
+      actions.appendChild(showDeleteDialogButton);
 
-      const contentContainer = document.createElement('div');
-      contentContainer.classList.add('content-container');
+      const contentContainer = createElement('div', ['content-container']);
       contentContainer.appendChild(content);
-      contentContainer.appendChild(icons);
+      contentContainer.appendChild(actions);
 
-      const projectContainer = document.createElement('div');
-      projectContainer.dataset.projectName = project.name;
-      projectContainer.classList.add(
+      const projectContainer = createElement('div', [
         'nes-container',
         'is-rounded',
         'with-title',
         'nes-pointer',
         'project-container'
-      );
+      ]);
+      projectContainer.dataset.projectId = project.id;
+
       projectContainer.appendChild(title);
       projectContainer.appendChild(contentContainer);
-
       projectsList.appendChild(projectContainer);
     }
   });
 };
 
-const buildEditDialog = (project: Project) => {
-  const title = document.getElementById('edit-dialog-title');
-  title.innerText = `Edit '${project.name}'`;
+/**
+ *
+ * @param dialog
+ * @param project
+ */
+const buildEditDialog = (dialog: any, project: Project) => {
+  editDialogTitle.innerText = `Editing '${project.name}'`;
 
-  const projectId = document.getElementById('project-id') as HTMLInputElement;
   projectId.value = project.id;
+  nameInput.value = project.name;
+  descriptionInput.value = project.description;
 
-  const projectNameInput = document.getElementById(
-    'edit-project-name'
-  ) as HTMLInputElement;
-  projectNameInput.value = project.name;
+  cancelEditButton.addEventListener('click', event => {
+    event.stopPropagation();
+    dialog.close();
+  });
 
-  const projectDescriptionInput = document.getElementById(
-    'edit-project-description'
-  ) as HTMLInputElement;
-  projectDescriptionInput.value = project.description;
-
-  const editForm = document.getElementById('edit-project-form');
   editForm.addEventListener('submit', event => {
     event.preventDefault();
-    console.log('submit');
+
+    const validationResult = validateProjectData(
+      nameInput.value,
+      descriptionInput.value
+    );
+
+    if (validationResult) {
+      editFormErrorContainer.classList.remove('hidden');
+      editFormError.innerText = validationResult;
+      return;
+    }
+
+    editFormErrorContainer.classList.add('hidden');
+    updateProject({
+      id: projectId.value,
+      name: nameInput.value,
+      description: descriptionInput.value
+    });
+    editDialog.close();
+    updateProjectsList();
   });
 };
 
-const buildDeleteDialog = () => {};
+/**
+ *
+ * @param projectId
+ */
+const buildDeleteDialog = (name: string, projectId: string) => {
+  deleteDialogTitle.innerText = name;
+  deleteButton.dataset.projectId = projectId;
 
-function createElement(type: string, classes: string[]) {
+  deleteButton.addEventListener('click', function() {
+    deleteProject(projectId);
+    updateProjectsList();
+  });
+};
+
+/**
+ *
+ * @param type
+ * @param classes
+ */
+const createElement = (type: string, classes: string[]) => {
   const element = document.createElement(type);
   element.classList.add(...classes);
   return element;
-}
-
-// TODO: hide error message after 3000
-function setErrorMessage(message?: string) {
-  if (message || message === '') {
-    document.getElementById('general-error').innerText = message;
-    document
-      .getElementById('general-error-container')
-      .classList.remove('hidden');
-  } else {
-    document.getElementById('general-error-container').classList.add('hidden');
-  }
-}
+};
 
 window.onload = () => {
   updateProjectsList();
